@@ -12,7 +12,7 @@ Load the source code into the ghci
 #Build a truth table
 Suupose we want to build a truth table like this, which have 2 variables:
 
-| A        | B       | 
+| x        | y       | 
 | -------- |:--------| 
 | True     | True    | 
 | True     | False   | 
@@ -27,7 +27,7 @@ Let create a hand-made **and** function, and apply it to our truth table.
 
 f(x, y) = x && y
 
-| A        | B       | x && y |
+| x        | y       | x && y |
 | -------- |:--------|--------|
 | True     | True    | True   | 
 | True     | False   | False  |
