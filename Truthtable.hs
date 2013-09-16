@@ -1,3 +1,5 @@
+import Control.Monad
+import Language.Haskell.Interpreter
 import Data.List
 
 type TruthTable = [[Bool]]
@@ -61,3 +63,26 @@ showTableResult t = putStrLn (showRowResult t)
 -- instance Show TruthTable where
 --     show [] = ""
 --     show x = showRows x
+--
+
+
+main = do
+    putStrLn "Please enter the numbers of proposition variable"
+    numStr <- getLine
+    let num = read numStr :: Integer
+
+    putStrLn "Please enter your formula"
+    putStrLn "eg: let f (x:y:_) = x && y"
+    fExpr <- getLine
+    let exp = fExpr ++ " in f"
+
+    -- Create an interpreter that runs exp
+    r <- runInterpreter $ do
+            setImports ["Prelude"]
+            interpret exp (const True :: [Bool] -> Bool)
+    -- run it and get an interface to the function
+    case r of
+        Left err -> putStrLn $ "Parsing error, please input the formula again"
+        Right f  -> do
+            showTableResult (solveTable f num)
+
