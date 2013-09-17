@@ -5,7 +5,7 @@ It's a small library to build a truth table. It can apply a function on the trut
 #Install the dependencies
 You need to install the ghci and the hint package.
 
-1. Download ghci from http://www.haskell.org/platform/
+1. Download the ghci from http://www.haskell.org/platform/
 2. After you install the ghci, install the hint package using command: cabal install hint
 
 #Usage
@@ -82,3 +82,13 @@ We have to create our own function and pass it to the library function, **solveT
 
 
 The output will be an array of tuples, each tuple consist of the truth values applying on the function and the output of the function.
+
+#Logical operation
+When you need to define the function in the program, you need use the following syntax to represent the logical operation.
+
+| Logical operation      | Syntax           | 
+| -----------------------|:-----------------|
+| a AND b                | a && b           |
+| a OR b                 | a || b           | 
+| a IMPLIES b            | a <= b           |
+| NOT a                  | not a            |
