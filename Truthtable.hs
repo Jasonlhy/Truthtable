@@ -6,23 +6,22 @@ type TruthTable = [[Bool]]
 type TruthTableResult = [([Bool], Bool)]
 
 -- Create an list of true value in a row
--- this function contruct the list from last column and append it to the previos column and reverse the result
--- Input: current row, current column,  how many rows for t's pair or f's pair 
--- Output: True values in a row
-rowValues :: Integer -> Integer -> Integer-> [Bool]
-rowValues i j n = reverse (rowValues' i j n)
-                where rowValues' _ (-1) _ = []
-                      rowValues' i j n = let previousColumns = rowValues' i (j-1) (n*2)
-                                             truthValue      =  even (div i n)
-                                         in  truthValue : previousColumns
+-- this function contruct the list of truth values in a row
+-- Input: last column index, current row index,
+-- Output: True values in a row (An array of Bool)
+rowValues :: Integer -> Integer -> [Bool]
+rowValues l i = let truthValue n = even (div i n)
+                    numPairs x = 2^(l - x)
+                in map (truthValue . numPairs) [0..l]
                   
 -- Build a truth table with n variables
+-- The row && column index of the table start with 0
 -- Input: the number of variable
--- Output: An Array of an array of Bool
+-- Output: TruthTable (An array of an array of Bool)
 truthTable :: Integer -> TruthTable
 truthTable n = let lastRowIndex = 2^n-1
                    lastColumnIndex = n-1
-               in  map (\x -> rowValues x (lastColumnIndex) 1) [0..lastRowIndex]
+               in  map (rowValues lastColumnIndex) [0..lastRowIndex]
 
 -- Apply the function to each row of a truth table, and return the result 
 -- Input : function going to be applied, number of variable in the truth table
@@ -47,16 +46,8 @@ showTable t = let s = showRows t
 -- Show truth table result in pretty format
 showTableResult :: TruthTableResult -> IO ()
 showTableResult t = putStrLn (showTableResult' t)
-                where rowStr str (v, r) = str ++ ((show v) ++ ",\t" ++ (show r) ++ "\n")                     
-                      showTableResult' t = foldl rowStr "" t
-
-
--- TO BE DONE LATER, SOME PROBLEMS EXIST
--- instance Show TruthTable where
---     show [] = ""
---     show x = showRows x
---
-
+                where rowStr str (v, r) = str ++ ((show v) ++ ", \t" ++ (show r) ++ "\n")                     
+                      showTableResult' t = foldl rowStr "\n" t
 
 main = do
     putStrLn "Please enter the numbers of proposition variable"
@@ -77,4 +68,5 @@ main = do
         Left err -> putStrLn $ "Parsing error, please input the formula again"
         Right f  -> do
             showTableResult (solveTable f num)
+
 
