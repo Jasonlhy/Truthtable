@@ -44,19 +44,11 @@ showTable :: TruthTable -> IO ()
 showTable t = let s = showRows t
               in putStrLn s
 
--- Contruct the string of truth table result 
--- Input: a truth table result
--- Output: a string seperate each row of truth table result
-showRowResult :: TruthTableResult -> String
-showRowResult [] = ""
-showRowResult (x:xs) = let v = fst x
-                           r = snd x
-                           eachRowResult = (show v) ++ ", " ++ (show r) ++ "\n"
-                       in  eachRowResult ++ showRowResult xs
-
 -- Show truth table result in pretty format
 showTableResult :: TruthTableResult -> IO ()
-showTableResult t = putStrLn (showRowResult t)
+showTableResult t = putStrLn (showTableResult' t)
+                where rowStr str (v, r) = str ++ ((show v) ++ ",\t" ++ (show r) ++ "\n")                     
+                      showTableResult' t = foldl rowStr "" t
 
 
 -- TO BE DONE LATER, SOME PROBLEMS EXIST
